@@ -4,8 +4,8 @@ This application will help users with budgeting. Users will log their transactio
 that way the can figure out how much money they're spending on things.
 
 ## Tech / Language:
-. C#
-. ASP.Net Core MVC
-. .Net 6
-. Javascript
-. SQL
+* C#
+* ASP.Net Core MVC
+* .Net 6
+* Javascript
+* SQL
