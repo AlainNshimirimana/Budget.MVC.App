@@ -9,7 +9,7 @@ namespace Budget.MVC.App.Repositories
     {
         List<Transaction> GetTransactions();
     }
-    public class BudgetRepository
+    public class BudgetRepository:IBudgetRepository
     {
         private readonly IConfiguration _configuration;
         public BudgetRepository(IConfiguration configuration)
@@ -20,14 +20,13 @@ namespace Budget.MVC.App.Repositories
         // Connect to the database and get all transactions
         public List<Transaction> GetTransactions()
         {
-            using (IDbConnection connection =
-                new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
             {
-                var query = @"SELECT t.Amount, t.CategoryId, t.Id, t.TransactionType, t.Name,
-                c.Name AS Category
-                FROM Transaction AS t
-                LEFT JOIN Category AS c
-                ON t.CategoryId = c.Id;";
+                var query =
+                    @"SELECT t.Amount, t.CategoryId, t.[Date], t.Id, t.TransactionType, t.Name, c.Name AS Category
+                      FROM Transactions AS t
+                      LEFT JOIN Category AS c
+                      ON t.CategoryId = c.Id;";
 
                 var allTransactions = connection.Query<Transaction>(query);
 

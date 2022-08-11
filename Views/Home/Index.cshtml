@@ -1,1 +1,51 @@
-﻿
+﻿@model BudgetViewModel
+
+<table id="records" class="table">
+    <tbody>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <tr class="list-row">
+                <td class="d-none">@Html.DisplayFor(modelItem => transaction.Id)</td>
+                <td class="transaction-cell">
+                    <div class="transaction-date">@Html.DisplayFor(modelItem => transaction.Date)</div> <br/>
+                    <div class="transaction-name">@Html.DisplayFor(modelItem => transaction.Name)</div> <br/>
+                    @if (transaction.TransactionType == TransactionType.Income)
+                    {
+                        <div class="transaction-type-income">@Html.DisplayFor(modelItem => transaction.TransactionType)</div> <br/>
+                    }
+                    else
+                    {
+                        <div class="transaction-type-expense">@Html.DisplayFor(modelItem => transaction.TransactionType)</div> <br/>
+                    }
+                </td>
+
+                <td class="transaction-amount">
+                    @if (transaction.TransactionType == TransactionType.Income)
+                    {
+                        <div class="transaction-amount-income">
+                            +@Html.DisplayFor(modelItem => transaction.Amount)$
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="transaction-amount-expense">
+                            -@Html.DisplayFor(modelItem => transaction.Amount)$
+                        </div>
+                    }
+
+                </td>
+
+                <td class="transaction-category">@Html.DisplayFor(modelItem => transaction.Category)</td>
+
+                <td class="d-none"> @Html.DisplayFor(modelItem => transaction.CategoryId)</td>
+
+                <td class="d-none"> @transaction.TransactionType</td>
+
+                <td class="button-cell">
+                    <button type="button" class="btn btn-danger deleteTransaction"></button>
+                    <button type="button" class="btn btn-primary updateTransaction"></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
