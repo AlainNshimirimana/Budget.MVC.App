@@ -8,6 +8,7 @@ namespace Budget.MVC.App.Repositories
     public interface IBudgetRepository
     {
         List<Transaction> GetTransactions();
+        List<Category> GetCategories();
     }
     public class BudgetRepository:IBudgetRepository
     {
@@ -15,6 +16,19 @@ namespace Budget.MVC.App.Repositories
         public BudgetRepository(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        public List<Category> GetCategories()
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var query =
+                    @"SELECT * FROM Category";
+
+                var categories = connection.Query<Category>(query);
+
+                return categories.ToList();
+            }
         }
 
         // Connect to the database and get all transactions
