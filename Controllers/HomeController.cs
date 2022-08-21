@@ -17,10 +17,12 @@ namespace Budget.MVC.App.Controllers
         public IActionResult Index()
         {
             var transactions = _budgetRepository.GetTransactions();
+            var categories = _budgetRepository.GetCategories();
 
             var viewModel = new BudgetViewModel
             {
-                Transactions = transactions
+                Transactions = transactions,
+                InsertTransaction = new InsertTransactionViewModel { Categories = categories}
             };
             return View(viewModel);
         }
