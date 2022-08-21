@@ -26,5 +26,20 @@ namespace Budget.MVC.App.Controllers
             };
             return View(viewModel);
         }
+
+        public IActionResult InsertTransaction(BudgetViewModel bvm)
+        {
+            var transaction = new Transaction
+            {
+                Id = bvm.InsertTransaction.Id,
+                Name = bvm.InsertTransaction.Name,
+                Amount =  bvm.InsertTransaction.Amount,
+                Date = bvm.InsertTransaction.Date,
+                TransactionType = bvm.InsertTransaction.TransactionType,
+                CategoryId = bvm.InsertTransaction.CategoryId,
+            };
+            _budgetRepository.AddTransaction(transaction);
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Budget.MVC.App.Repositories
     {
         List<Transaction> GetTransactions();
         List<Category> GetCategories();
+        void AddTransaction(Transaction transaction);
     }
     public class BudgetRepository:IBudgetRepository
     {
@@ -16,6 +17,16 @@ namespace Budget.MVC.App.Repositories
         public BudgetRepository(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        public void AddTransaction(Transaction transaction)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var query = @"INSERT INTO Transactions(Name, Date, Amount, TransactionType, CategoryId) 
+                            VALUES(@Name, @Date, @Amount, @TransactionType, @CategoryId)";
+                connection.Execute(query, transaction);
+            }
         }
 
         public List<Category> GetCategories()
