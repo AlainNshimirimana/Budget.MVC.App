@@ -38,8 +38,17 @@ namespace Budget.MVC.App.Controllers
                 TransactionType = bvm.InsertTransaction.TransactionType,
                 CategoryId = bvm.InsertTransaction.CategoryId,
             };
-            _budgetRepository.AddTransaction(transaction);
+            if (transaction.Id > 0)
+            {
+                _budgetRepository.UpdateTransaction(transaction);
+            }
+            else
+            {
+                _budgetRepository.AddTransaction(transaction);
+            }
             return RedirectToAction("Index");
         }
+
+
     }
 }

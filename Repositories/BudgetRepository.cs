@@ -10,6 +10,7 @@ namespace Budget.MVC.App.Repositories
         List<Transaction> GetTransactions();
         List<Category> GetCategories();
         void AddTransaction(Transaction transaction);
+        void UpdateTransaction(Transaction transaction);
     }
     public class BudgetRepository:IBudgetRepository
     {
@@ -56,6 +57,17 @@ namespace Budget.MVC.App.Repositories
                 var allTransactions = connection.Query<Transaction>(query);
 
                 return allTransactions.ToList();
+            }
+        }
+
+        public void UpdateTransaction(Transaction transaction)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var query = @"UPDATE Transactions
+                              SET Name = @Name, Date = @Date, Amount = @Amount, TransactionType = @TransactionType, CategoryId = @CategoryId
+                              WHERE Id = @Id";
+                connection.Execute(query, transaction);
             }
         }
     }       
