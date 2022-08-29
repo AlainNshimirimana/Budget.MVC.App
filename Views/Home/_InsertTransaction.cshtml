@@ -31,7 +31,6 @@
             <div class="row justify-content-center transaction-input">
                 <div class="form-floating col-xl-6 col-lg-8 col-md-8 col-sm-10">
                     <select asp-for="InsertTransaction.CategoryId" class="form-control" id="dropdown-opt">
-                        <option></option>
                         @foreach (var category in Model.InsertTransaction.Categories)
                         {
                             <option value="@category.Id">@category.Name</option>
