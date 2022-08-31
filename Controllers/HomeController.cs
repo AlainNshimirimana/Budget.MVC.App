@@ -22,11 +22,12 @@ namespace Budget.MVC.App.Controllers
             var viewModel = new BudgetViewModel
             {
                 Transactions = transactions,
-                InsertTransaction = new InsertTransactionViewModel { Categories = categories}
+                InsertTransaction = new InsertTransactionViewModel { Categories = categories }
             };
             return View(viewModel);
         }
 
+        [HttpPost]
         public IActionResult InsertTransaction(BudgetViewModel bvm)
         {
             var transaction = new Transaction
@@ -46,6 +47,13 @@ namespace Budget.MVC.App.Controllers
             {
                 _budgetRepository.AddTransaction(transaction);
             }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteTransaction(int id)
+        {
+            _budgetRepository.DeleteTransaction(id);
+
             return RedirectToAction("Index");
         }
 

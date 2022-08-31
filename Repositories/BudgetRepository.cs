@@ -11,6 +11,7 @@ namespace Budget.MVC.App.Repositories
         List<Category> GetCategories();
         void AddTransaction(Transaction transaction);
         void UpdateTransaction(Transaction transaction);
+        void DeleteTransaction(int id);
     }
     public class BudgetRepository:IBudgetRepository
     {
@@ -27,6 +28,17 @@ namespace Budget.MVC.App.Repositories
                 var query = @"INSERT INTO Transactions(Name, Date, Amount, TransactionType, CategoryId) 
                             VALUES(@Name, @Date, @Amount, @TransactionType, @CategoryId)";
                 connection.Execute(query, transaction);
+            }
+        }
+
+        public void DeleteTransaction(int id)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var query =
+                    @"DELETE FROM Transactions WHERE Id = @id";
+
+                connection.Execute(query, new { id });
             }
         }
 

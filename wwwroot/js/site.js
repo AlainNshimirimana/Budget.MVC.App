@@ -11,8 +11,6 @@ $(".updateTransaction").on("click", function () {
     var categoryId = $(this).closest('tr').find('td:eq(4)').html();
     var transactionType = $(this).closest('tr').find('#transaction-type').html();
 
-    console.log($.trim(date));
-
     $('#insert-transaction-form #InsertTransaction_Id').val($.trim(id));
     $('#insert-transaction-form #InsertTransaction_Date').val($.trim(date));
     $('#insert-transaction-form #InsertTransaction_Amount').val($.trim(amount).slice(1, -1));
@@ -20,4 +18,11 @@ $(".updateTransaction").on("click", function () {
     $(`#insert-transaction-form #InsertTransaction_CategoryId option[value=${categoryId}]`).attr('selected', 'selected');
     $('#insert-transaction-form #InsertTransaction_TransactionType').find(`option:contains('${$.trim(transactionType)}')`).attr('selected', 'selected');
     $("#addTransactionModal").modal("show");
+});
+
+$(".deleteTransaction").on("click", function(){
+    var id = $(this).closest('tr').find('td:first').html();
+
+    $('#deleteTransactionForm').append(`<input type="hidden" name="id" value="${id}">`);
+    $("#deleteTransactionModal").modal("show");
 });
