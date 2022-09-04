@@ -26,3 +26,20 @@ $(".deleteTransaction").on("click", function(){
     $('#deleteTransactionForm').append(`<input type="hidden" name="id" value="${id}">`);
     $("#deleteTransactionModal").modal("show");
 });
+$("#manageCategories").on("click", function () {
+    $("#categories").removeClass("d-none");
+    $("#backToTransactions").removeClass("d-none");
+    $("#records").addClass("d-none");
+    $("#openTransactionModalBtn").addClass("d-none");
+    $("#openCategoryModalBtn").removeClass("d-none");
+    $("#manageCategories").addClass("d-none");
+});
+
+$("#backToTransactions").on("click", function () {
+    $("#categories").addClass("d-none");
+    $("#backToTransactions").addClass("d-none");
+    $("#records").removeClass("d-none");
+    $("#openTransactionModalBtn").removeClass("d-none");
+    $("#openCategoryModalBtn").addClass("d-none");
+    $("#manageCategories").removeClass("d-none");
+});

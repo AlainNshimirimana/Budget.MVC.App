@@ -22,7 +22,8 @@ namespace Budget.MVC.App.Controllers
             var viewModel = new BudgetViewModel
             {
                 Transactions = transactions,
-                InsertTransaction = new InsertTransactionViewModel { Categories = categories }
+                InsertTransaction = new InsertTransactionViewModel { Categories = categories },
+                Categories = new CategoryViewModel {  Categories = categories}
             };
             return View(viewModel);
         }
