@@ -2,16 +2,20 @@
 using Microsoft.Data.Sqlite;
 using Dapper;
 using System.Data;
+using System.Xml.Linq;
 
 namespace Budget.MVC.App.Repositories
 {
     public interface IBudgetRepository
     {
         List<Transaction> GetTransactions();
-        List<Category> GetCategories();
         void AddTransaction(Transaction transaction);
         void UpdateTransaction(Transaction transaction);
         void DeleteTransaction(int id);
+        List<Category> GetCategories();
+        void AddCategory(string category);
+        void UpdateCategory(string category, int id);
+        void DeleteCategory(int id);
     }
     public class BudgetRepository:IBudgetRepository
     {
@@ -21,6 +25,16 @@ namespace Budget.MVC.App.Repositories
             _configuration = configuration;
         }
 
+        public void AddCategory(string category)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var query = @"INSERT INTO Category(Name) 
+                            VALUES(@Name)";
+                connection.Execute(query, new {Name = category});
+            }
+        }
+
         public void AddTransaction(Transaction transaction)
         {
             using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
@@ -28,6 +42,17 @@ namespace Budget.MVC.App.Repositories
                 var query = @"INSERT INTO Transactions(Name, Date, Amount, TransactionType, CategoryId) 
                             VALUES(@Name, @Date, @Amount, @TransactionType, @CategoryId)";
                 connection.Execute(query, transaction);
+            }
+        }
+
+        public void DeleteCategory(int id)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var query =
+                    @"DELETE FROM Category WHERE Id = @id";
+
+                connection.Execute(query, new { id });
             }
         }
 
@@ -69,6 +94,17 @@ namespace Budget.MVC.App.Repositories
                 var allTransactions = connection.Query<Transaction>(query);
 
                 return allTransactions.ToList();
+            }
+        }
+
+        public void UpdateCategory(string category, int id)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var sql =
+                    "UPDATE Category SET Name = @Name WHERE Id = @Id";
+
+                connection.Execute(sql, new { Name = category, Id = id });
             }
         }
 

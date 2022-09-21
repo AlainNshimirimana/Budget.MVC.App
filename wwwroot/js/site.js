@@ -3,6 +3,10 @@
     $("#addTransactionModal").modal("show");
 });
 
+$("#openCategoryModalBtn").on("click", function () {
+    $("#addCategoryModal").modal("show");
+});
+
 $(".updateTransaction").on("click", function () {
     var id = $(this).closest('tr').find('td:first').html();
     var date = $(this).closest('tr').find('td:eq(1) .transaction-date').html();
@@ -18,6 +22,22 @@ $(".updateTransaction").on("click", function () {
     $(`#insert-transaction-form #InsertTransaction_CategoryId option[value=${categoryId}]`).attr('selected', 'selected');
     $('#insert-transaction-form #InsertTransaction_TransactionType').find(`option:contains('${$.trim(transactionType)}')`).attr('selected', 'selected');
     $("#addTransactionModal").modal("show");
+});
+
+$(".openUpdateCategoryModalBtn").on("click", function () {
+    var id = $(this).closest('tr').find('td:first').html();
+    var name = $(this).closest('tr').find('td:eq(1)').html();
+
+    $('#insert-category-form #InsertCategory_Id').val($.trim(id));
+    $('#insert-category-form #InsertCategory_Name').val($.trim(name));
+
+    $("#addCategoryModal").modal("show");
+});
+
+$(".openDeleteCategoryModalBtn").on("click", function () {
+    var id = $(this).closest('tr').find('td:first').html();
+    $('#deleteCategoryForm').append(`<input type="hidden" name="id" value="${id}">`);
+    $("#deleteCategoryModal").modal("show");
 });
 
 $(".deleteTransaction").on("click", function(){

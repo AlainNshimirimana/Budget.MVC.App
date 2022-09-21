@@ -7,5 +7,7 @@ namespace Budget.MVC.App.ViewModels
         public List<Transaction>? Transactions { get; set; }
         public InsertTransactionViewModel InsertTransaction { get; set; }
         public CategoryViewModel Categories { get; set; }
+
+        public InsertCategoryViewModel InsertCategory { get; set; }
     }
 }

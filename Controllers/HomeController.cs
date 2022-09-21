@@ -40,6 +40,7 @@ namespace Budget.MVC.App.Controllers
                 TransactionType = bvm.InsertTransaction.TransactionType,
                 CategoryId = bvm.InsertTransaction.CategoryId,
             };
+            // update transaction
             if (transaction.Id > 0)
             {
                 _budgetRepository.UpdateTransaction(transaction);
@@ -54,6 +55,28 @@ namespace Budget.MVC.App.Controllers
         public IActionResult DeleteTransaction(int id)
         {
             _budgetRepository.DeleteTransaction(id);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult InsertCategory(BudgetViewModel bvm)
+        {
+            // add and update transaction
+            if (bvm.InsertCategory.Id > 0)
+            {
+                _budgetRepository.UpdateCategory(bvm.InsertCategory.Name, bvm.InsertCategory.Id);
+            }
+            else
+            {
+                _budgetRepository.AddCategory(bvm.InsertCategory.Name);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteCategory(int id)
+        {
+            _budgetRepository.DeleteCategory(id);
 
             return RedirectToAction("Index");
         }
