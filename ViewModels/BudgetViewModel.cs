@@ -8,5 +8,6 @@ namespace Budget.MVC.App.ViewModels
         public InsertTransactionViewModel InsertTransaction { get; set; }
         public CategoryViewModel Categories { get; set; }
         public InsertCategoryViewModel InsertCategory { get; set; }
+        public FilterParametersViewModel? FilterParameters { get; set; }
     }
 }

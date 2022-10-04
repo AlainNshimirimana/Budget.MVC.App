@@ -14,16 +14,17 @@ namespace Budget.MVC.App.Controllers
         {
             _budgetRepository = budgetRepository;
         }
-        public IActionResult Index()
+        public IActionResult Index(BudgetViewModel? model)
         {
-            var transactions = _budgetRepository.GetTransactions();
+            var transactions = FilterTransactions(model);
             var categories = _budgetRepository.GetCategories();
 
             var viewModel = new BudgetViewModel
             {
                 Transactions = transactions,
                 InsertTransaction = new InsertTransactionViewModel { Categories = categories },
-                Categories = new CategoryViewModel {  Categories = categories}
+                Categories = new CategoryViewModel {  Categories = categories},
+                FilterParameters = new FilterParametersViewModel { Categories = categories }
             };
             return View(viewModel);
         }
@@ -79,6 +80,49 @@ namespace Budget.MVC.App.Controllers
             _budgetRepository.DeleteCategory(id);
 
             return RedirectToAction("Index");
+        }
+
+        //filter transactions
+        private List<Transaction> FilterTransactions(BudgetViewModel? model)
+        {
+            var transactions = _budgetRepository.GetTransactions();
+
+            if (model.FilterParameters == null)
+                transactions = transactions.ToList();
+
+            else if ((model.FilterParameters.CategoryId != 0 && model.FilterParameters.StartDate == null))
+                transactions = transactions
+                    .Where(x => x.CategoryId == model.FilterParameters.CategoryId)
+                    .ToList();
+
+            else if ((model.FilterParameters.CategoryId == 0 && model.FilterParameters.StartDate != null))
+                transactions = transactions
+                    .Where(x =>
+                    DateTime.Parse(x.Date) >= DateTime.Parse(model.FilterParameters.StartDate) &&
+                    DateTime.Parse(x.Date) <= DateTime.Parse(model.FilterParameters.EndDate))
+                    .ToList();
+
+            else if ((model.FilterParameters.CategoryId != 0 && model.FilterParameters.StartDate != null))
+                transactions = transactions
+                         .Where(x =>
+                         DateTime.Parse(x.Date) >= DateTime.Parse(model.FilterParameters.StartDate) &&
+                         DateTime.Parse(x.Date) <= DateTime.Parse(model.FilterParameters.EndDate) &&
+                         x.CategoryId == model.FilterParameters.CategoryId)
+                         .ToList();
+
+            return transactions;
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public JsonResult IsUnique([Bind(Prefix = "InsertCategory.Name")] string name)
+        {
+            var categories = _budgetRepository.GetCategories();
+
+            if (categories.Any(x => x.Name == name))
+                return Json("Category already exists");
+
+            return Json(true);
+
         }
 
 
